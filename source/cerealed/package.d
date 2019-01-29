@@ -1,6 +1,6 @@
 module cerealed;
 
 
-ubyte[] cerealise(bool b) @safe pure {
-    return b ? [1] : [0];
+ubyte[] cerealise(T)(in T value) {
+    return [value];
 }
