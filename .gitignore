@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/cerealed2
+cerealed2.so
+cerealed2.dylib
+cerealed2.dll
+cerealed2.a
+cerealed2.lib
+cerealed2-test-*
+*.exe
+*.o
+*.obj
+*.lst
+bin

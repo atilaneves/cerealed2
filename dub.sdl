@@ -1,0 +1,21 @@
+name "cerealed"
+description "Advanced serialisation library for D"
+authors "Atila Neves"
+copyright "Copyright © 2019, Atila Neves"
+license "BSD 3-clause"
+
+targetType "library"
+targetPath "bin"
+
+configuration "library" {
+
+}
+
+
+configuration "unittest" {
+    targetType "executable"
+    targetName "ut"
+    sourcePaths "tests"
+    mainSourceFile "tests/main.d"
+    dependency "unit-threaded" version="*"
+}
