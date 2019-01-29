@@ -23,3 +23,24 @@ import ut;
         b.cerealise.should == [33];
     }
 }
+
+
+@("ubyte")
+@safe pure unittest {
+    {
+        ubyte b = 42;
+        b.cerealise.should == [42];
+    }
+
+    {
+        ubyte b = 33;
+        b.cerealise.should == [33];
+    }
+}
+
+
+@("char")
+@safe pure unittest {
+    'a'.cerealise.should == ['a'];
+    'b'.cerealise.should == ['b'];
+}
