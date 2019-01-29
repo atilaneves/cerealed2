@@ -17,6 +17,13 @@ alias testObjs = dlangObjectsPerModule!(
     dubImportPaths!(Configuration("unittest"))
 );
 
+alias testObjsLight = dlangObjectsPerModule!(
+    Sources!"tests",
+    CompilerFlags(debugFlags ~ ["-unittest", "-version=unitThreadedLight"]),
+    dubImportPaths!(Configuration("unittest"))
+);
+
+
 
 alias ut = dubLink!(
     TargetName("ut"),
@@ -25,4 +32,11 @@ alias ut = dubLink!(
 );
 
 
-mixin build!(ut);
+alias utl = dubLink!(
+    TargetName("utl"),
+    Configuration("unittest"),
+    targetConcat!(lib, testObjsLight, dubDependencies!(Configuration("unittest"))),
+);
+
+
+mixin build!(ut, optional!utl);
