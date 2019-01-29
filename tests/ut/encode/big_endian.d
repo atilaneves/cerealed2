@@ -44,3 +44,10 @@ import ut;
     'a'.cerealise.should == ['a'];
     'b'.cerealise.should == ['b'];
 }
+
+
+@("wchar")
+@safe pure unittest {
+    wchar c = 0xabcd;
+    c.cerealise.should == [0xab, 0xcd];
+}
