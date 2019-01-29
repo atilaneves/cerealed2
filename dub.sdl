@@ -7,6 +7,8 @@ license "BSD 3-clause"
 targetType "library"
 targetPath "bin"
 
+dflags "-dip25" "-dip1000"
+
 
 configuration "library" {
 

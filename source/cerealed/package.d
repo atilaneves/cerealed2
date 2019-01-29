@@ -1,11 +1,15 @@
 module cerealed;
 
 
-ubyte[] cerealise(T)(in T value) if(T.sizeof == 1) {
-    return [value];
+ubyte[] cerealise(B, T)(in T value) if(T.sizeof == 1) {
+    auto backend = B();
+    backend.handleOctet(value);
+    return backend.bytes.dup;
 }
 
 
-ubyte[] cerealise(T)(in T value) if(T.sizeof == 2) {
-    return [cast(ubyte) (value >> 8), cast(ubyte) (value & 0x00ff)];
+ubyte[] cerealise(B, T)(in T value) if(T.sizeof == 2) {
+    auto backend = B();
+    backend.handleWord(value);
+    return backend.bytes.dup;
 }
