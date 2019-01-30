@@ -12,9 +12,9 @@ import cerealed;
 )
 @Types!(BigEndian, LittleEndian, JSON)
 void thereAndBackAgain(Type, Backend)() @safe {
-    static if(is(Type == wchar) && is(Backend == JSON)) {
-        // wchar is throwing an invalid UTF sequence but seems to work otherwise
-    } else {
+    static if(is(Type == wchar) && is(Backend == JSON))
+        // wchar is throwing an invalid UTF sequence but seems to work else
+        1.should == 1;
+    else
         check!((Type val) => val.cerealise!Backend.decerealise!(Type, Backend) == val);
-    }
 }
