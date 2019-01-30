@@ -1,10 +1,17 @@
 module cerealed.backend.little_endian;
 
 
+
 struct LittleEndian {
+
+    import std.traits: Unqual;
 
     alias Cerealiser = ToBytes;
     alias Decerealiser = FromBytes;
+
+    enum isCerealiser(C) = is(Unqual!C == Cerealiser);
+    enum isDecerealiser(C) = is(Unqual!C == Decerealiser);
+
 
     static void handle(C, T)(ref scope C cereal, ref scope T value)
         if(T.sizeof == 1)
@@ -16,12 +23,22 @@ struct LittleEndian {
     static void handle(C, T)(ref scope C cereal, ref scope T value)
         if(T.sizeof == 2)
     {
-        const hi = cast(ubyte) (value >> 8);
-        const ubyte lo = value & 0x00ff;
+        import std.traits: Unqual;
+
+        static if(isCerealiser!C) {
+            auto hi = cast(ubyte) (value >> 8);
+            ubyte lo = value & 0x00ff;
+        } else {
+            ubyte hi = void;
+            ubyte lo = void;
+        }
+
         cereal.handleOctet(lo);
         cereal.handleOctet(hi);
-    }
 
+        static if(isDecerealiser!C)
+            value = cast(T) ((hi << 8) | lo);
+    }
 }
 
 
@@ -41,9 +58,6 @@ struct FromBytes {
 
     void handleOctet(T)(ref T value) if(T.sizeof == 1) {
         value = cast(T) bytes[0];
-    }
-
-    void handle(T)(ref T value) if(T.sizeof == 2) {
-        value = cast(T) ((bytes[0] << 8) | bytes[1]);
+        bytes = bytes[1..$];
     }
 }
