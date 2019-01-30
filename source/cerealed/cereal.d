@@ -8,7 +8,10 @@ alias cerealize = cerealise;
 alias decerealize = decerealise;
 
 
-auto cerealise(Backend = from!"cerealed.backend.big_endian".BigEndian, T)
+alias DefaultBackend = from!"cerealed.backend.big_endian".BigEndian;
+
+
+auto cerealise(Backend = DefaultBackend, T)
               (in T value)
 {
     auto cereal = Backend.Cerealiser();
@@ -17,7 +20,7 @@ auto cerealise(Backend = from!"cerealed.backend.big_endian".BigEndian, T)
 }
 
 
-T decerealise(T, Backend = from!"cerealed.backend.big_endian".BigEndian, R)
+T decerealise(T, Backend = DefaultBackend, R)
              (R range)
     if(from!"std.range.primitives".isInputRange!R)
 {
