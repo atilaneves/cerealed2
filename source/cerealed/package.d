@@ -1,6 +1,9 @@
 module cerealed;
 
 
+alias cerealize = cerealise;
+
+
 auto cerealise(B, T)(in T value) if(T.sizeof == 1) {
     auto backend = B();
     backend.handleOctet(value);
