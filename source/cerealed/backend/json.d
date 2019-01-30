@@ -10,7 +10,7 @@ struct JSON {
         bytes ~= value.text;
     }
 
-    void handleWord(T: wchar)(ref T value) {
+    void handleWord(T)(ref T value) if(T.sizeof == 2) {
         import std.conv: text;
         bytes ~= value.text;
     }

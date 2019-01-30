@@ -54,3 +54,17 @@ import std.conv: to;
     const wchar c = "a"w[0];
     c.cerealise!JSON.should == "a";
 }
+
+
+@("short")
+@safe pure unittest {
+    const short c = 12345;
+    c.cerealise!JSON.should == "12345";
+}
+
+
+@("ushort")
+@safe pure unittest {
+    const ushort c = 12345;
+    c.cerealise!JSON.should == "12345";
+}

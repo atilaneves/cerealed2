@@ -52,3 +52,17 @@ import cerealed.backend.big_endian;
     const wchar c = 0xabcd;
     c.cerealise.should == [0xab, 0xcd];
 }
+
+
+@("short")
+@safe pure unittest {
+    const short c = 0x4bcd;
+    c.cerealise.should == [0x4b, 0xcd];
+}
+
+
+@("ushort")
+@safe pure unittest {
+    const ushort c = 0xabcd;
+    c.cerealise.should == [0xab, 0xcd];
+}

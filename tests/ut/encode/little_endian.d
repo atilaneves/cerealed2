@@ -52,3 +52,17 @@ import cerealed.backend.little_endian;
     const wchar c = 0xabcd;
     c.cerealise!LittleEndian.should == [0xcd, 0xab];
 }
+
+
+@("short")
+@safe pure unittest {
+    const short c = 0x4bcd;
+    c.cerealise!LittleEndian.should == [0xcd, 0x4b];
+}
+
+
+@("ushort")
+@safe pure unittest {
+    const ushort c = 0xabcd;
+    c.cerealise!LittleEndian.should == [0xcd, 0xab];
+}

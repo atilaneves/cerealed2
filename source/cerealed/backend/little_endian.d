@@ -10,8 +10,8 @@ struct LittleEndian {
     }
 
     void handleWord(T)(ref T value) if(T.sizeof == 2) {
-        ubyte hi = value >> 8;
-        ubyte lo = value & 0x00ff;
+        const hi = cast(ubyte) (value >> 8);
+        const ubyte lo = value & 0x00ff;
         handleOctet(lo);
         handleOctet(hi);
     }
