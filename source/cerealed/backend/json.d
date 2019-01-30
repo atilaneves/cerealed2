@@ -1,7 +1,7 @@
 module cerealed.backend.json;
 
 
-struct Json {
+struct JSON {
 
     char[] bytes;
 
