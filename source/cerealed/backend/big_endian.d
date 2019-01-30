@@ -31,4 +31,9 @@ struct FromBytes {
     void handle(T)(ref T value) if(T.sizeof == 1) {
         value = cast(T) bytes[0];
     }
+
+    void handle(T)(ref T value) if(T.sizeof == 2) {
+        value = cast(T) ((bytes[0] << 8) | bytes[1]);
+    }
+
 }
