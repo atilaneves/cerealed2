@@ -2,8 +2,42 @@ module cerealed.backend.big_endian;
 
 
 struct BigEndian {
+
+    import std.traits: Unqual;
+
     alias Cerealiser = ToBytes;
     alias Decerealiser = FromBytes;
+
+    enum isCerealiser(C) = is(Unqual!C == Cerealiser);
+    enum isDecerealiser(C) = is(Unqual!C == Decerealiser);
+
+
+    static void handle(C, T)(ref scope C cereal, ref scope T value)
+        if(T.sizeof == 1)
+    {
+        cereal.handleOctet(value);
+    }
+
+
+    static void handle(C, T)(ref scope C cereal, ref scope T value)
+        if(T.sizeof == 2)
+    {
+        import std.traits: Unqual;
+
+        static if(isCerealiser!C) {
+            auto hi = cast(ubyte) (value >> 8);
+            ubyte lo = value & 0x00ff;
+        } else {
+            ubyte hi = void;
+            ubyte lo = void;
+        }
+
+        cereal.handleOctet(hi);
+        cereal.handleOctet(lo);
+
+        static if(isDecerealiser!C)
+            value = cast(T) ((hi << 8) | lo);
+    }
 }
 
 
@@ -14,13 +48,6 @@ struct ToBytes {
     void handleOctet(T)(ref T value) if(T.sizeof == 1) {
         bytes ~= value;
     }
-
-    void handleWord(T)(ref T value) if(T.sizeof == 2) {
-        const hi = cast(ubyte) (value >> 8);
-        const ubyte lo = value & 0x00ff;
-        handleOctet(hi);
-        handleOctet(lo);
-    }
 }
 
 
@@ -28,12 +55,8 @@ struct FromBytes {
 
     const(ubyte)[] bytes;
 
-    void handle(T)(ref T value) if(T.sizeof == 1) {
+    void handleOctet(T)(ref T value) if(T.sizeof == 1) {
         value = cast(T) bytes[0];
+        bytes = bytes[1..$];
     }
-
-    void handle(T)(ref T value) if(T.sizeof == 2) {
-        value = cast(T) ((bytes[0] << 8) | bytes[1]);
-    }
-
 }

@@ -2,7 +2,12 @@ module cerealed.backend.json;
 
 
 struct JSON {
+
     alias Cerealiser = ToString;
+
+    static void handle(C, T)(ref scope C cereal, ref scope T value) {
+        cereal.handle(value);
+    }
 }
 
 
@@ -10,12 +15,7 @@ struct ToString {
 
     char[] bytes;
 
-    void handleOctet(T)(ref T value) if(T.sizeof == 1) {
-        import std.conv: text;
-        bytes ~= value.text;
-    }
-
-    void handleWord(T)(ref T value) if(T.sizeof == 2) {
+    void handle(T)(ref T value) {
         import std.conv: text;
         bytes ~= value.text;
     }
