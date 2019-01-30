@@ -15,12 +15,12 @@ import cerealed.backend.little_endian;
 @("byte")
 @safe pure unittest {
     {
-        byte b = 42;
+        const byte b = 42;
         b.cerealise!LittleEndian.should == [42];
     }
 
     {
-        byte b = 33;
+        const byte b = 33;
         b.cerealise!LittleEndian.should == [33];
     }
 }
@@ -29,12 +29,12 @@ import cerealed.backend.little_endian;
 @("ubyte")
 @safe pure unittest {
     {
-        ubyte b = 42;
+        const ubyte b = 42;
         b.cerealise!LittleEndian.should == [42];
     }
 
     {
-        ubyte b = 33;
+        const ubyte b = 33;
         b.cerealise!LittleEndian.should == [33];
     }
 }
@@ -49,6 +49,6 @@ import cerealed.backend.little_endian;
 
 @("wchar")
 @safe pure unittest {
-    wchar c = 0xabcd;
+    const wchar c = 0xabcd;
     c.cerealise!LittleEndian.should == [0xcd, 0xab];
 }
