@@ -3,7 +3,6 @@ module ut.property;
 
 import ut;
 import cerealed;
-import cerealed.backend.big_endian;
 
 
 @UnitTest
@@ -23,4 +22,15 @@ void thereAndBackAgainBig(T)() @safe {
 )
 void thereAndBackAgainLittle(T)() @safe {
     check!((T val) => val.cerealise!LittleEndian.decerealise!(T, LittleEndian) == val);
+}
+
+
+@UnitTest
+@Types!(
+    bool, byte, ubyte, char,
+    // wchar is throwing an invalid UTF sequence but seems to work otherwise
+    /*wchar, */ short, ushort,
+)
+void thereAndBackAgainJSON(T)() @safe {
+    check!((T val) => val.cerealise!JSON.decerealise!(T, JSON) == val);
 }
