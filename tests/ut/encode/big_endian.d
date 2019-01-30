@@ -7,8 +7,8 @@ import cerealed.backend.big_endian;
 
 @("bool")
 @safe pure unittest {
-    false.cerealise!BigEndian.should == [0];
-    true.cerealise!BigEndian.should == [1];
+    false.cerealise.should == [0];
+    true.cerealise.should == [1];
 }
 
 
@@ -16,12 +16,12 @@ import cerealed.backend.big_endian;
 @safe pure unittest {
     {
         const byte b = 42;
-        b.cerealise!BigEndian.should == [42];
+        b.cerealise.should == [42];
     }
 
     {
         const byte b = 33;
-        b.cerealise!BigEndian.should == [33];
+        b.cerealise.should == [33];
     }
 }
 
@@ -30,25 +30,25 @@ import cerealed.backend.big_endian;
 @safe pure unittest {
     {
         const ubyte b = 42;
-        b.cerealise!BigEndian.should == [42];
+        b.cerealise.should == [42];
     }
 
     {
         const ubyte b = 33;
-        b.cerealise!BigEndian.should == [33];
+        b.cerealise.should == [33];
     }
 }
 
 
 @("char")
 @safe pure unittest {
-    'a'.cerealise!BigEndian.should == ['a'];
-    'b'.cerealise!BigEndian.should == ['b'];
+    'a'.cerealise.should == ['a'];
+    'b'.cerealise.should == ['b'];
 }
 
 
 @("wchar")
 @safe pure unittest {
     const wchar c = 0xabcd;
-    c.cerealise!BigEndian.should == [0xab, 0xcd];
+    c.cerealise.should == [0xab, 0xcd];
 }
