@@ -2,6 +2,11 @@ module cerealed.backend.json;
 
 
 struct JSON {
+    alias Cerealiser = ToString;
+}
+
+
+struct ToString {
 
     char[] bytes;
 

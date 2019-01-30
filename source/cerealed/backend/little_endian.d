@@ -2,6 +2,11 @@ module cerealed.backend.little_endian;
 
 
 struct LittleEndian {
+    alias Cerealiser = ToBytes;
+}
+
+
+struct ToBytes {
 
     ubyte[] bytes;
 
