@@ -4,8 +4,43 @@
 module cerealed.backend.binary;
 
 
+struct Binary {
 
-package struct ToBytes {
+    import std.traits: Unqual;
+
+    alias Cerealiser = ToBytes;
+    alias Decerealiser = FromBytes;
+
+    enum isCerealiser(C) = is(Unqual!C == Cerealiser);
+    enum isDecerealiser(C) = is(Unqual!C == Decerealiser);
+
+    package static void handleIntegral(C, T, R)(ref scope C cereal, ref scope T value, R range)
+    {
+        static if(Binary.isDecerealiser!C)
+            T newVal = 0;
+
+        foreach(i; range) {
+
+            const shiftBy = T.sizeof * 8 - (i + 1) * 8;
+
+            static if(Binary.isCerealiser!C)
+                ubyte byteVal = (value >> shiftBy) & 0xff;
+            else
+                ubyte byteVal = void;
+
+            cereal.handleOctet(byteVal);
+
+            static if(Binary.isDecerealiser!C)
+                newVal = cast(T) (newVal | (byteVal << shiftBy));
+        }
+
+        static if(Binary.isDecerealiser!C)
+            value = newVal;
+    }
+}
+
+
+private struct ToBytes {
 
     ubyte[] bytes;
 
@@ -15,7 +50,7 @@ package struct ToBytes {
 }
 
 
-package struct FromBytes {
+private struct FromBytes {
 
     const(ubyte)[] bytes;
 
@@ -23,29 +58,4 @@ package struct FromBytes {
         value = cast(T) bytes[0];
         bytes = bytes[1..$];
     }
-}
-
-
-package void handleIntegral(B, C, T, R)(ref scope C cereal, ref scope T value, R range)
-{
-    static if(B.isDecerealiser!C)
-        T newVal = 0;
-
-    foreach(i; range) {
-
-        const shiftBy = T.sizeof * 8 - (i + 1) * 8;
-
-        static if(B.isCerealiser!C)
-            ubyte byteVal = (value >> shiftBy) & 0xff;
-        else
-            ubyte byteVal = void;
-
-        cereal.handleOctet(byteVal);
-
-        static if(B.isDecerealiser!C)
-            newVal = cast(T) (newVal | (byteVal << shiftBy));
-    }
-
-    static if(B.isDecerealiser!C)
-        value = newVal;
 }
