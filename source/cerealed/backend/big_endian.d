@@ -3,6 +3,7 @@ module cerealed.backend.big_endian;
 
 struct BigEndian {
 
+    import cerealed.backend.binary: ToBytes, FromBytes;
     import std.traits: Unqual;
 
     alias Cerealiser = ToBytes;
@@ -33,26 +34,5 @@ struct BigEndian {
 
         static if(isDecerealiser!C)
             value = newVal;
-    }
-}
-
-
-struct ToBytes {
-
-    ubyte[] bytes;
-
-    void handleOctet(T)(ref const(T) value) if(T.sizeof == 1) {
-        bytes ~= value;
-    }
-}
-
-
-struct FromBytes {
-
-    const(ubyte)[] bytes;
-
-    void handleOctet(T)(ref T value) if(T.sizeof == 1) {
-        value = cast(T) bytes[0];
-        bytes = bytes[1..$];
     }
 }
