@@ -14,31 +14,27 @@ struct LittleEndian {
 
 
     static void handle(C, T)(ref scope C cereal, ref scope T value)
-        if(T.sizeof == 1)
     {
-        cereal.handleOctet(value);
-    }
+        static if(isDecerealiser!C)
+            T newVal = 0;
 
+        for(int i = T.sizeof - 1; i >= 0; --i) {
 
-    static void handle(C, T)(ref scope C cereal, ref scope T value)
-        if(T.sizeof == 2)
-    {
-        import std.traits: Unqual;
+            const shiftBy = T.sizeof * 8 - (i + 1) * 8;
 
-        static if(isCerealiser!C) {
-            auto hi = cast(ubyte) (value >> 8);
-            ubyte lo = value & 0x00ff;
-        } else {
-            ubyte hi = void;
-            ubyte lo = void;
+            static if(isCerealiser!C)
+                ubyte byteVal = (value >> shiftBy) & 0xff;
+            else
+                ubyte byteVal = void;
+
+            cereal.handleOctet(byteVal);
+
+            static if(isDecerealiser!C)
+                newVal = cast(T) (newVal | (byteVal << shiftBy));
         }
 
-        cereal.handleOctet(lo);
-        cereal.handleOctet(hi);
-
-        static if(isDecerealiser!C) {
-            value = cast(T) ((hi << 8) | lo);
-        }
+        static if(isDecerealiser!C)
+            value = newVal;
     }
 }
 
