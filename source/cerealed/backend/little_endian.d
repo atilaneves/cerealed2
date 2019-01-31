@@ -36,8 +36,9 @@ struct LittleEndian {
         cereal.handleOctet(lo);
         cereal.handleOctet(hi);
 
-        static if(isDecerealiser!C)
+        static if(isDecerealiser!C) {
             value = cast(T) ((hi << 8) | lo);
+        }
     }
 }
 
