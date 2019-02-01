@@ -9,7 +9,6 @@ targetPath "bin"
 
 dflags "-dip25" "-dip1000" "-dip1008"
 
-dependency "automem" version="~>0.4.5"
 
 
 configuration "library" {
@@ -26,6 +25,7 @@ configuration "unittest" {
     mainSourceFile "tests/main.d"
 
     dependency "unit-threaded" version="*"
+    dependency "automem" version="~>0.4.6"
 }
 
 
@@ -44,4 +44,5 @@ configuration "asan" {
     versions "unitUnthreaded" "unitThreadedLight"
 
     dependency "unit-threaded" version="*"
+    dependency "automem" version="~>0.4.6"
 }

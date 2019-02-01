@@ -68,7 +68,7 @@ import cerealed.backend.big_endian;
 }
 
 
-@("ushort.nogc")
+@("ushort.nogc.ret")
 @safe unittest {
 
     import automem.vector: Vector;
@@ -77,4 +77,18 @@ import cerealed.backend.big_endian;
     const ushort c = 0xabcd;
     auto bytes = () @nogc { return c.cerealise!(BigEndian!(Vector!(ubyte, Mallocator))); }();
     c.cerealise.should == [0xab, 0xcd];
+}
+
+
+@("ushort.nogc.then")
+@safe @nogc unittest {
+    import cerealed: cerealiseThen;
+    const ushort c = 0xabcd;
+
+    void fun(in ubyte[] bytes) {
+        ubyte[2] expected = [0xab, 0xcd];
+        assert(bytes == expected);
+    }
+
+    c.cerealiseThen!fun;
 }

@@ -1,6 +1,6 @@
 import reggae;
 
-enum debugFlags = ["-w", "-g", "-debug"];
+enum debugFlags = ["-w", "-g", "-debug", "-version=Have_automem"];
 
 alias lib = dubConfigurationTarget!(
     Configuration("library"),
@@ -17,25 +17,11 @@ alias testObjs = dlangObjectsPerModule!(
     dubImportPaths!(Configuration("unittest"))
 );
 
-alias testObjsLight = dlangObjectsPerModule!(
-    Sources!"tests",
-    CompilerFlags(debugFlags ~ ["-unittest", "-version=unitThreadedLight"]),
-    dubImportPaths!(Configuration("unittest"))
-);
-
-
 
 alias ut = dubLink!(
     TargetName("ut"),
     Configuration("unittest"),
     targetConcat!(lib, testObjs, dubDependencies!(Configuration("unittest"))),
-);
-
-
-alias utl = dubLink!(
-    TargetName("utl"),
-    Configuration("unittest"),
-    targetConcat!(lib, testObjsLight, dubDependencies!(Configuration("unittest"))),
 );
 
 
@@ -46,4 +32,4 @@ alias asan = dubConfigurationTarget!(
 );
 
 
-mixin build!(ut, optional!utl, optional!asan);
+mixin build!(ut, optional!asan);
