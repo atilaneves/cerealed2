@@ -61,8 +61,20 @@ import cerealed.backend.big_endian;
 }
 
 
-@("ushort")
+@("ushort.gc")
 @safe pure unittest {
     const ushort c = 0xabcd;
+    c.cerealise.should == [0xab, 0xcd];
+}
+
+
+@("ushort.nogc")
+@safe unittest {
+
+    import automem.vector: Vector;
+    import stdx.allocator.mallocator: Mallocator;
+
+    const ushort c = 0xabcd;
+    auto bytes = () @nogc { return c.cerealise!(BigEndian!(Vector!(ubyte, Mallocator))); }();
     c.cerealise.should == [0xab, 0xcd];
 }

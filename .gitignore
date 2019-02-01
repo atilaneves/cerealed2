@@ -14,3 +14,4 @@ cerealed2-test-*
 *.obj
 *.lst
 bin
+bin.asan

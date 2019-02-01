@@ -9,9 +9,10 @@ alias decerealize = decerealise;
 
 
 alias DefaultBackend = from!"cerealed.backend.big_endian".BigEndian;
+alias DefaultOutput = from!"std.array".Appender!(ubyte[]);
 
 
-auto cerealise(Backend = DefaultBackend, T)
+auto cerealise(Backend = DefaultBackend!DefaultOutput, T)
               (in T value)
 {
     auto cereal = Backend.Cerealiser();

@@ -9,6 +9,8 @@ targetPath "bin"
 
 dflags "-dip25" "-dip1000" "-dip1008"
 
+dependency "automem" version="~>0.4.5"
+
 
 configuration "library" {
 
@@ -18,8 +20,28 @@ configuration "library" {
 configuration "unittest" {
     targetType "executable"
     targetName "ut"
+
     sourcePaths "tests"
     importPaths "tests"
     mainSourceFile "tests/main.d"
+
+    dependency "unit-threaded" version="*"
+}
+
+
+configuration "asan" {
+    targetType "executable"
+    targetName "asan"
+
+    sourcePaths "tests"
+    importPaths "tests"
+    mainSourceFile "tests/main.d"
+
+    dflags "-dip25" "-dip1000" "-dip1008"
+    dflags "-fsanitize=address" platform="ldc"
+
+    // unit threaded light is necessary for the tests to actually run
+    versions "unitUnthreaded" "unitThreadedLight"
+
     dependency "unit-threaded" version="*"
 }

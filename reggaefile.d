@@ -39,4 +39,11 @@ alias utl = dubLink!(
 );
 
 
-mixin build!(ut, optional!utl);
+alias asan = dubConfigurationTarget!(
+    Configuration("asan"),
+    CompilerFlags(debugFlags ~ " -unittest -cov -fsanitize=address"),
+    LinkerFlags("-fsanitize=address"),
+);
+
+
+mixin build!(ut, optional!utl, optional!asan);

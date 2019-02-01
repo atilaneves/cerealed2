@@ -4,11 +4,11 @@
 module cerealed.backend.binary;
 
 
-struct Binary {
+struct Binary(Output) {
 
     import std.traits: Unqual;
 
-    alias Cerealiser = ToBytes;
+    alias Cerealiser = ToBytes!Output;
     alias Decerealiser = FromBytes;
 
     enum isCerealiser(C) = is(Unqual!C == Cerealiser);
@@ -40,12 +40,19 @@ struct Binary {
 }
 
 
-private struct ToBytes {
+private struct ToBytes(Output) {
 
-    ubyte[] bytes;
+    private Output _output;
 
     void handleOctet(T)(ref const(T) value) if(T.sizeof == 1) {
-        bytes ~= value;
+        _output.put(cast(ubyte) value);
+    }
+
+    auto bytes() @safe @nogc pure nothrow inout {
+        static if(__traits(compiles, _output[]))
+            return _output[];
+        else
+            return _output.data;
     }
 }
 
