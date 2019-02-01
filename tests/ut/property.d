@@ -9,6 +9,7 @@ import cerealed;
 @Types!(
     bool, byte, ubyte, char,
     wchar, short, ushort,
+    int, uint,
 )
 @Types!(BigEndian!DefaultOutput, LittleEndian!DefaultOutput, JSON)
 void thereAndBackAgain(Type, Backend)() @safe {
