@@ -75,7 +75,7 @@ import cerealed.backend.big_endian;
     import stdx.allocator.mallocator: Mallocator;
 
     const ushort c = 0xabcd;
-    auto bytes = () @nogc { return c.cerealise!(BigEndian!(Vector!(ubyte, Mallocator))); }();
+    scope bytes = () @nogc { return c.cerealise!(BigEndian!(Vector!(ubyte, Mallocator))); }();
     c.cerealise.should == [0xab, 0xcd];
 }
 
