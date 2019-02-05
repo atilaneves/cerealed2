@@ -30,8 +30,10 @@ struct Binary(Output) {
 
             cereal.handleOctet(byteVal);
 
-            static if(Binary.isDecerealiser!C)
-                newVal = cast(T) (newVal | (byteVal << shiftBy));
+            static if(Binary.isDecerealiser!C) {
+                const byteValAsT = cast(T) byteVal;
+                newVal = cast(T) (newVal | (byteValAsT << shiftBy));
+            }
         }
 
         static if(Binary.isDecerealiser!C)

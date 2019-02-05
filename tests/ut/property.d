@@ -10,6 +10,7 @@ import cerealed;
     bool, byte, ubyte, char,
     wchar, short, ushort,
     dchar, int, uint,
+    long, ulong,
 )
 @Types!(BigEndian!DefaultOutput, LittleEndian!DefaultOutput, JSON)
 void thereAndBackAgain(Type, Backend)() {

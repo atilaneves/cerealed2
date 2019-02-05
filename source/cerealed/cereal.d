@@ -47,7 +47,7 @@ auto cerealise(Backend = DefaultBackend!DefaultOutput, T)
 }
 
 
-T decerealise(T, Backend = DefaultBackend, R)
+T decerealise(T, Backend = DefaultBackend!DefaultOutput, R)
              (R range)
     if(from!"std.range.primitives".isInputRange!R)
 {

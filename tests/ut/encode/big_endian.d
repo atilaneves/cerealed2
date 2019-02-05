@@ -92,3 +92,15 @@ import cerealed.backend.big_endian;
 
     c.cerealiseThen!fun;
 }
+
+
+@("ulong")
+@safe pure unittest {
+    const ulong value = 0x68930cad8;
+    //value.cerealise.should == [0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77];
+    auto bytes = value.cerealise;
+    bytes.should == [0, 0, 0, 0x6, 0x89, 0x30, 0xca, 0xd8];
+
+    import cerealed;
+    bytes.decerealise!ulong.should == value;
+}
