@@ -6,7 +6,7 @@ module cerealed.backend.binary;
 
 struct Binary(Output) {
 
-    import std.traits: Unqual;
+    import std.traits: Unqual, isFloatingPoint;
 
     alias Cerealiser = ToBytes!Output;
     alias Decerealiser = FromBytes;
@@ -14,7 +14,13 @@ struct Binary(Output) {
     enum isCerealiser(C) = is(Unqual!C == Cerealiser);
     enum isDecerealiser(C) = is(Unqual!C == Decerealiser);
 
-    package static void handleIntegral(C, T, R)(ref scope C cereal, ref scope T value, R range)
+    private template isIntegral(T) {
+        import std.traits: isIntegral_ = isIntegral, isSomeChar, isBoolean, isFloatingPoint;
+        enum isIntegral = isIntegral_!T || isSomeChar!T || isBoolean!T;
+    }
+
+    package static void handle(C, T, R)(ref scope C cereal, ref scope T value, R range)
+        if(isIntegral!T)
     {
         static if(Binary.isDecerealiser!C)
             T newVal = 0;
@@ -38,6 +44,24 @@ struct Binary(Output) {
 
         static if(Binary.isDecerealiser!C)
             value = newVal;
+    }
+
+    package static void handle(C, T, R)(ref scope C cereal, ref scope T value, R range)
+        if(isFloatingPoint!T)
+    {
+        static if(T.sizeof == 4)
+            alias Int = uint;
+        else static if(T.sizeof == 8)
+            alias Int = ulong;
+        else
+            static assert(false, "Unknown floating point type " ~ T.stringof);
+
+        auto bits = () @trusted { return *(cast(Int*) &value); }();
+
+        handle(cereal, bits, range);
+
+        static if(Binary.isDecerealiser!C)
+            value = () @trusted { return *(cast(T*) &bits); }();
     }
 }
 

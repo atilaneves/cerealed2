@@ -49,6 +49,7 @@ auto cerealise(Backend = DefaultBackend!DefaultOutput, T)
 
 T decerealise(T, Backend = DefaultBackend!DefaultOutput, R)
              (R range)
+    @safe
     if(from!"std.range.primitives".isInputRange!R)
 {
     auto ret = T.init;

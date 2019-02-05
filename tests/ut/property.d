@@ -9,12 +9,14 @@ import cerealed;
 @Types!(
     bool, byte, ubyte, char,
     wchar, short, ushort,
-    dchar, int, uint,
+    dchar, int, uint, float,
     long, ulong,
 )
 @Types!(BigEndian!DefaultOutput, LittleEndian!DefaultOutput, JSON)
 void thereAndBackAgain(Type, Backend)() {
-    static if((is(Type == wchar) || is(Type == dchar)) && is(Backend == JSON))
+    import std.traits: isFloatingPoint;
+
+    static if((is(Type == wchar) || is(Type == dchar) || isFloatingPoint!Type) && is(Backend == JSON))
         // wchar is throwing an invalid UTF sequence but seems to work else
         1.should == 1;
     else

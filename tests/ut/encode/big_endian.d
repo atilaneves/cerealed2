@@ -104,3 +104,11 @@ import cerealed.backend.big_endian;
     import cerealed;
     bytes.decerealise!ulong.should == value;
 }
+
+
+@("float")
+@system pure unittest {
+    const intValue = 0x00112233;
+    const floatValue = *(cast(float*) &intValue);
+    floatValue.cerealise.should == [0x00, 0x11, 0x22, 0x33];
+}

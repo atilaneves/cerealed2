@@ -25,7 +25,16 @@ struct ToString {
 
 struct FromString {
 
-    char[] bytes;
+    const(char)[] bytes;
+
+    this(const(char)[] bytes) @safe @nogc pure {
+        this.bytes = bytes;
+    }
+
+    this(const(ubyte)[] bytes) @safe pure {
+        import std.string: assumeUTF;
+        this.bytes = bytes.assumeUTF;
+    }
 
     void handle(T)(ref T value) {
         import std.conv: to;

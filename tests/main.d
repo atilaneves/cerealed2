@@ -9,4 +9,5 @@ mixin runTestsMain!(
     "ut.encode.json",
 
     "ut.decode.big_endian",
+    "ut.decode.json",
 );

@@ -68,3 +68,10 @@ import std.conv: to;
     const ushort c = 12345;
     c.cerealise!JSON.should == "12345";
 }
+
+
+@("float")
+@safe unittest {
+    const value = 3.3f;
+    value.cerealise!JSON.should == "3.3";
+}
