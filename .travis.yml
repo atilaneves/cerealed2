@@ -1,0 +1,17 @@
+language: d
+sudo: false
+
+matrix:
+  include:
+    - d: dmd-nightly
+    - d: dmd-2.084.0
+    - d: ldc-1.13.0
+  allow_failures:
+    - d: dmd-nightly
+
+script:
+  - dub test --build=unittest-cov --compiler=${DC}
+  - dub build --compiler=${DC}
+
+after_success:
+ - bash <(curl -s https://codecov.io/bash)
